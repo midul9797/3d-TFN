@@ -1,6 +1,5 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect } from "react";
-import { useState } from "react";
 import { useRef } from "react";
 import data from "../../public/main.json";
 import * as THREE from "three";
@@ -33,23 +32,13 @@ function TubeWithObjects() {
   path.add(curve);
   const tubeRef = useRef<THREE.TubeGeometry>();
 
-  const scrollProgress = useRef(0);
-  const { pointIndex, setPointIndex } = useStore(); // Tracks the current point index
-  const [ps, setPs] = useState([]); // Get 50 points along the curve
+  const { pointIndex, setPointIndex } = useStore();
 
-  // Handle wheel scroll event to change the point index
   const handleWheel = (event) => {
-    // Adjust index based on wheel direction
-
-    setPointIndex(
-      event.deltaY > 0 ? 0.2 : -0.2,
-      d.length // Increment or decrement index
-      // newIndex = Math.max(0, Math.min(ps.length - 1, newIndex)); // Clamp between 0 and 49
-    );
+    setPointIndex(event.deltaY > 0 ? 0.2 : -0.2, d.length);
   };
 
   useEffect(() => {
-    // Add wheel event listener directly to the canvas
     gl.domElement.addEventListener("wheel", handleWheel);
     return () => {
       gl.domElement.removeEventListener("wheel", handleWheel);
@@ -88,29 +77,9 @@ function TubeWithObjects() {
       // const pos2 = tubeRef.current.parameters.path.getPointAt(t2);
     }
   });
-  // useEffect(() => {
-  //   if (tubeRef.current) {
-  //     const curvePoints = Array.from(
-  //       { length: 50 },
-  //       (_, i) => tubeRef.current.parameters.path.getPointAt(i / 49) // Normalize t between 0 and 1
-  //     ); // Get 50 points along the curve
-  //     setPs(curvePoints);
-  //   }
-  // }, [tubeRef]);
-  // useEffect(() => {
-  //   if (tubeRef.current && ps.length !== 0) {
-  //     // Set the camera position and look at the next point in the curve
-  //     const pos = ps[pointIndex];
-  //     const pos2 = ps[(pointIndex + 1) % points.length]; // Look slightly ahead to the next point
 
-  //     camera.position.set(pos.x, pos.y, pos.z);
-  //     camera.lookAt(pos2.x, pos2.y, pos2.z);
-  //   }
-  // }, [camera, pointIndex, points]);
   return (
     <>
-      {/* Tube Geometry */}
-
       <>
         <mesh>
           <tubeGeometry ref={tubeRef} args={[path, 64, 2, 8, true]} />
@@ -122,7 +91,6 @@ function TubeWithObjects() {
           />
         </mesh>
 
-        {/* Objects Inside or Along the Path */}
         {path.getPoints(50).map((point, index) => {
           if (index < d.length)
             return (

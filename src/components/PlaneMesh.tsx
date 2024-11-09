@@ -2,10 +2,9 @@ import { Image, Text } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 
 import { useFrame } from "@react-three/fiber";
-import { useControls } from "leva";
 import { useRef } from "react";
 import { useStore } from "../zustand/store";
-function PlaneMesh({ point, index, d }) {
+function PlaneMesh({ point, d }) {
   const { pointIndex } = useStore();
   const meshRef = useRef();
   const imgRef = useRef();
@@ -26,23 +25,6 @@ function PlaneMesh({ point, index, d }) {
 
   return (
     <mesh ref={meshRef} position={point}>
-      {/* <Html distanceFactor={10} style={{ pointerEvents: "auto" }}>
-          <div
-            className="element"
-            style={{
-              backgroundColor: `rgba(0,127,127,${Math.random() * 0.5 + 0.25})`,
-            }}
-          >
-            <div className="number">{10}</div>
-            <div className="symbol">
-              <a href={""} target="_blank" rel="noopener noreferrer">
-              <img src={""} alt="Symbol" />
-              </a>
-              </div>
-              <div className="details">{"el.detail"}</div>
-              </div>
-              </Html> */}
-      {/* <planeGeometry args={[0.75, 1]} /> */}
       {pointIndex.toFixed(0) === pointIndex.toFixed(4) && (
         <Text
           letterSpacing={0.1}
@@ -73,21 +55,6 @@ function PlaneMesh({ point, index, d }) {
       >
         {d.title.toUpperCase()}
       </Text>
-      {/* <Html>
-          <div
-            style={{
-              position: "relative",
-              left: "15vw",
-              bottom: "50px",
-              width: "400px",
-              height: "100px",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            {d[index].description}
-          </div>
-        </Html> */}
     </mesh>
   );
 }
