@@ -1,16 +1,17 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-
-import data from "../../public/main.json";
+import Loader from "../../../components/loading";
 import Scene from "@/components/Scene";
 import { useStore } from "@/zustand/store";
-import Loader from "../components/loading";
+import data from "../../../../public/main.json";
 import { Article } from "@/types";
 import { Suspense } from "react";
-export default function Home() {
+export default function Technology() {
+  const news = data.filter(
+    (content) => content.category === "technology"
+  ) as Article[];
   const { pointIndex } = useStore();
-  const news = data.slice(0, 20) as Article[];
   return (
     <>
       <main className="h-screen  overflow-hidden">

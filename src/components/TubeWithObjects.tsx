@@ -1,17 +1,18 @@
+"use client";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect } from "react";
 import { useRef } from "react";
-import data from "../../public/main.json";
 import * as THREE from "three";
 import PlaneMesh from "./PlaneMesh";
 import { useStore } from "@/zustand/store";
-function TubeWithObjects() {
+import { Article } from "@/types";
+function TubeWithObjects({ news }: { news: Article[] }) {
   // Define a path for the tube
   const { camera, gl } = useThree();
   const path = new THREE.CurvePath();
   const points = [];
-  const randomness = 5;
-  const d = data.filter((content) => content.category === "world");
+
+  const { pointIndex, setPointIndex } = useStore();
 
   for (let i = 0; i < 50; i++) {
     // Adjust this function to control the curve's shape
@@ -32,10 +33,8 @@ function TubeWithObjects() {
   path.add(curve);
   const tubeRef = useRef<THREE.TubeGeometry>();
 
-  const { pointIndex, setPointIndex } = useStore();
-
-  const handleWheel = (event) => {
-    setPointIndex(event.deltaY > 0 ? 0.2 : -0.2, d.length);
+  const handleWheel = (event: WheelEvent) => {
+    setPointIndex(event.deltaY > 0 ? 0.2 : -0.2, news.length);
   };
 
   useEffect(() => {
@@ -82,7 +81,10 @@ function TubeWithObjects() {
     <>
       <>
         <mesh>
-          <tubeGeometry ref={tubeRef} args={[path, 64, 2, 8, true]} />
+          <tubeGeometry
+            ref={tubeRef}
+            args={[path as THREE.Curve<THREE.Vector3>, 64, 2, 8, true]}
+          />
           <meshBasicMaterial
             color={"black"}
             transparent
@@ -92,14 +94,9 @@ function TubeWithObjects() {
         </mesh>
 
         {path.getPoints(50).map((point, index) => {
-          if (index < d.length)
+          if (news && index < news?.length)
             return (
-              <PlaneMesh
-                key={index}
-                index={index}
-                d={d[index]}
-                point={point}
-              ></PlaneMesh>
+              <PlaneMesh key={index} d={news[index]} point={point}></PlaneMesh>
             );
         })}
       </>

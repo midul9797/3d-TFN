@@ -2,15 +2,18 @@
 
 import { Canvas } from "@react-three/fiber";
 
-import data from "../../public/main.json";
+import data from "../../../../public/main.json";
+
 import Scene from "@/components/Scene";
 import { useStore } from "@/zustand/store";
-import Loader from "../components/loading";
+import Loader from "@/components/loading";
 import { Article } from "@/types";
 import { Suspense } from "react";
-export default function Home() {
+export default function Other() {
+  const news = data.filter(
+    (content) => content.category === "other"
+  ) as Article[];
   const { pointIndex } = useStore();
-  const news = data.slice(0, 20) as Article[];
   return (
     <>
       <main className="h-screen  overflow-hidden">

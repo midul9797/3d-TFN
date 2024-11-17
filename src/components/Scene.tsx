@@ -1,11 +1,12 @@
 "use client";
 
+import { Article } from "@/types";
 import TubeWithObjects from "./TubeWithObjects";
 
-const Scene = () => {
+const Scene = ({ news }: { news: Article[] }) => {
   return (
     <>
-      <TubeWithObjects />
+      <TubeWithObjects news={news} />
     </>
   );
 };
