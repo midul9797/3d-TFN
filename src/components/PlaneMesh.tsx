@@ -51,12 +51,7 @@ function PlaneMesh({ point, d }: { point: any; d: any }) {
         onPointerOut={() => (document.body.style.cursor = "default")}
         onClick={handleClick}
       >
-        <Image
-          url={d.image_url || ""}
-          scale={[0.75, 1]}
-          ref={imgRef}
-          crossOrigin="anonymous"
-        ></Image>
+        <Image url={d.image_url || ""} scale={[0.75, 1]} ref={imgRef}></Image>
       </mesh>
       <Text
         outlineBlur={1}
